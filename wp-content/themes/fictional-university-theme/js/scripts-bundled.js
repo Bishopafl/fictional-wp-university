@@ -10340,6 +10340,8 @@ var _HeroSlider = _interopRequireDefault(__webpack_require__(4));
 
 var _GoogleMap = _interopRequireDefault(__webpack_require__(5));
 
+var _Search = _interopRequireDefault(__webpack_require__(6));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // 3rd party packages from NPM
@@ -10348,6 +10350,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mobileMenu = new _MobileMenu.default();
 var heroSlider = new _HeroSlider.default();
 var googleMap = new _GoogleMap.default();
+var search = new _Search.default();
 
 /***/ }),
 /* 2 */
@@ -13580,6 +13583,128 @@ function () {
 }();
 
 var _default = GMap;
+exports.default = _default;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _jquery = _interopRequireDefault(__webpack_require__(0));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+// includes all you need for jQuery!
+var Search =
+/*#__PURE__*/
+function () {
+  // 1. Constructor is where we describe/initiate our object
+  function Search() {
+    _classCallCheck(this, Search);
+
+    this.resultsDiv = (0, _jquery.default)("#search-overlay__results");
+    this.openButton = (0, _jquery.default)(".js-search-trigger");
+    this.closeButton = (0, _jquery.default)(".search-overlay__close");
+    this.searchOverlay = (0, _jquery.default)(".search-overlay");
+    this.searchField = (0, _jquery.default)("#search-term");
+    this.events();
+    this.isOverlayOpen = false;
+    this.isSpinnerVisible = false;
+    this.previousValue;
+    this.typingTimer;
+  } // 2. Events  - connects dots between object and actions it can perform
+
+
+  _createClass(Search, [{
+    key: "events",
+    value: function events() {
+      this.openButton.on("click", this.openOverlay.bind(this));
+      this.closeButton.on("click", this.closeOverlay.bind(this));
+      (0, _jquery.default)(document).on("keydown", this.keyPressDispatcher.bind(this));
+      this.searchField.on("keyup", this.typingLogic.bind(this));
+    } // 3. methods (function, action...)
+
+  }, {
+    key: "typingLogic",
+    value: function typingLogic() {
+      if (this.searchField.val() != this.previousValue) {
+        clearTimeout(this.typingTimer);
+
+        if (this.searchField.val()) {
+          if (!this.isSpinnerVisible) {
+            this.resultsDiv.html('<div class="spinner-loader"></div>');
+            this.isSpinnerVisible = true;
+          }
+
+          this.typingTimer = setTimeout(this.getResults.bind(this), 2000);
+        } else {
+          this.resultsDiv.html('');
+          this.isSpinnerVisible = false;
+        }
+      }
+
+      this.previousValue = this.searchField.val();
+    }
+  }, {
+    key: "getResults",
+    value: function getResults() {
+      _jquery.default.getJSON('http://localhost/wordpress_playground/wordpress/wp-json/wp/v2/posts?search=' + this.searchField.val(), function (posts) {
+        alert(posts[0].title.rendered);
+      });
+    }
+  }, {
+    key: "openOverlay",
+    value: function openOverlay() {
+      this.searchOverlay.addClass("search-overlay--active");
+      (0, _jquery.default)("body").addClass("body-no-scroll");
+      console.log("open method just ran");
+      this.isOverlayOpen = true;
+    }
+  }, {
+    key: "closeOverlay",
+    value: function closeOverlay() {
+      this.searchOverlay.removeClass("search-overlay--active");
+      (0, _jquery.default)("body").removeClass("body-no-scroll");
+      console.log("close method just ran");
+      this.isOverlayOpen = false;
+    }
+  }, {
+    key: "keyPressDispatcher",
+    value: function keyPressDispatcher(e) {
+      if (e.keyCode == 83 && !this.isOverlayOpen && !(0, _jquery.default)("input, textarea").is(':focus')) {
+        this.openOverlay();
+      }
+
+      if (e.keyCode == 27 && this.isOverlayOpen) {
+        this.closeOverlay();
+      }
+    }
+  }]);
+
+  return Search;
+}();
+
+var _default = Search;
+/*
+
+this keyword allows reference of properties/methods
+
+
+*/
+
 exports.default = _default;
 
 /***/ })

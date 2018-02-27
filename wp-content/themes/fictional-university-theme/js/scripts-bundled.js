@@ -13664,7 +13664,9 @@ function () {
       var _this = this;
 
       _jquery.default.getJSON('http://localhost/wordpress_playground/wordpress/wp-json/wp/v2/posts?search=' + this.searchField.val(), function (posts) {
-        _this.resultsDiv.html("\n\t\t\t\t<h2 class=\"search-overlay__section-title\">General Information</h2>\n\t\t\t\t<ul class=\"link-list min-list\">\n\t\t\t\t\t<li>\n\t\t\t\t\t\t<a href=\"".concat(posts[0].link, "\">").concat(posts[0].title.rendered, "</a>\n\t\t\t\t\t</li>\n\t\t\t\t</ul>\n\t\t\t")); // back tick next to number one allows for template literal html entries in javascipt.  ${} in template literal tells javascript should be evaluated as real javascript code
+        _this.resultsDiv.html("\n\t\t\t\t<h2 class=\"search-overlay__section-title\">General Information</h2>\n\t\t\t\t<ul class=\"link-list min-list\">\n\t\t\t\t\t".concat(posts.map(function (item) {
+          return "<li><a href=\"".concat(item.link, "\">").concat(item.title.rendered, "</a></li>");
+        }).join(''), " \n\t\t\t\t</ul>\n\t\t\t")); // back tick next to number one allows for template literal html entries in javascipt.  ${} in template literal tells javascript should be evaluated as real javascript code
 
       });
     }

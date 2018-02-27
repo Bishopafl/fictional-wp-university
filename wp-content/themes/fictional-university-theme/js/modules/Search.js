@@ -45,8 +45,15 @@ class Search {
 	}
 
 	getResults() {
-		$.getJSON('http://localhost/wordpress_playground/wordpress/wp-json/wp/v2/posts?search=' + this.searchField.val(), function(posts) {
-			alert(posts[0].title.rendered);
+		$.getJSON('http://localhost/wordpress_playground/wordpress/wp-json/wp/v2/posts?search=' + this.searchField.val(), posts => {
+			this.resultsDiv.html(`
+				<h2 class="search-overlay__section-title">General Information</h2>
+				<ul class="link-list min-list">
+					<li>
+						<a href="${posts[0].link}">${posts[0].title.rendered}</a>
+					</li>
+				</ul>
+			`); // back tick next to number one allows for template literal html entries in javascipt.  ${} in template literal tells javascript should be evaluated as real javascript code
 		});
 	}
 

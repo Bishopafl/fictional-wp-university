@@ -45,13 +45,16 @@ class Search {
 	}
 
 	getResults() {
-		$.getJSON('http://localhost/wordpress_playground/wordpress/wp-json/wp/v2/posts?search=' + this.searchField.val(), posts => {
+		$.getJSON(universityData.root_url + '/wp-json/wp/v2/posts?search=' + this.searchField.val(), posts => {
+			// back tick next to number one allows for template literal html entries in javascipt.  ${} in template literal tells javascript should be evaluated as real javascript code
 			this.resultsDiv.html(`
 				<h2 class="search-overlay__section-title">General Information</h2>
-				<ul class="link-list min-list">
+				${posts.length ? '<ul class="link-list min-list">' : '<p>No general information matches that search</p>'}
 					${posts.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join('')} 
-				</ul>
-			`); // back tick next to number one allows for template literal html entries in javascipt.  ${} in template literal tells javascript should be evaluated as real javascript code
+				
+				${posts.length ? '</ul>' : ''}
+			`); 
+			this.isSpinnerVisible = false;
 		});
 	}
 

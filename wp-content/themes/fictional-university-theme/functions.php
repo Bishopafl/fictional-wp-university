@@ -72,6 +72,12 @@ function university_files() {
 	wp_enqueue_style('custom-google-fonts','//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
 	wp_enqueue_style('font-awesome','//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 	wp_enqueue_style('university_main_styles', get_stylesheet_uri(), NULL, microtime());
+
+	// outputs javascript data into html source 
+	wp_localize_script('main-university-js', 'universityData', array(
+		'root_url' => get_site_url(), // returns url of current WP installation
+		'sky' => 'blue'
+	)); 
 }
 // useful function takes 2 arguments
 // 1st arguement tells WP what kind of instructions to give it ( runs at different times )

@@ -1,6 +1,21 @@
 <?php 
 // private behind the scenes files that talks to wp itself
 
+
+/*******************************************/
+/*			CUSTOMIZES WP REST API   	   */
+/*******************************************/
+
+function university_custom_rest() {
+	// a - post-type you want to customize | b - what you want to name the new field | c - array how you want to manage the field
+	// register_rest_field(a, b, c); 
+	register_rest_field('post', 'authorName', array(
+		'get_callback' => function() {return get_the_author();}
+	)); 
+}
+
+add_action('rest_api_init', 'university_custom_rest');
+
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 // reusable function for page banner images and text
 function pageBanner($args = NULL) {
@@ -75,8 +90,8 @@ function university_files() {
 
 	// outputs javascript data into html source 
 	wp_localize_script('main-university-js', 'universityData', array(
-		'root_url' => get_site_url(), // returns url of current WP installation
-		'sky' => 'blue'
+		'root_url' => get_site_url() // returns url of current WP installation
+
 	)); 
 }
 // useful function takes 2 arguments

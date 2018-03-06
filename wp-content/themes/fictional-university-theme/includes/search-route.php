@@ -13,9 +13,10 @@ function universityRegisterSearch() {
 	));
 }
 
-function universitySearchResults() {
+function universitySearchResults($data) {
 	$professors =  new WP_Query(array( // new instance of query class that takes an array of what your looking for
-		'post_type' => 'professor'
+		'post_type' => 'professor',
+		's'			=> sanitize_text_field($data['term']) // array that wp puts together, let's sanitize it though
 	)); 
 
 	$professorResults = array();

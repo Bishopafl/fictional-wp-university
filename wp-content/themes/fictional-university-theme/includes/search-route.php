@@ -14,22 +14,42 @@ function universityRegisterSearch() {
 }
 
 function universitySearchResults($data) {
-	$professors =  new WP_Query(array( // new instance of query class that takes an array of what your looking for
-		'post_type' => 'professor',
+	$mainQuery =  new WP_Query(array( // new instance of query class that takes an array of what your looking for
+		'post_type' => array('post','page','professor', 'program', 'campus', 'event'), // in array of post types, you can query multiple post types
 		's'			=> sanitize_text_field($data['term']) // array that wp puts together, let's sanitize it though
 	)); 
 
-	$professorResults = array();
+	$results = array(	// results is an associative array that contains empty arrays to push data into from our mainQuery while loop
+		'generalInfo'	=> array(),
+		'professors'	=> array(),
+		'programs'		=> array(),
+		'events'		=> array(),
+		'campuses'		=> array()
+	);
 
-	while ($professors->have_posts()) { //however many posts live in collection is how many times the loop will run
-		$professors->the_post(); // gets data ready and accessible 
-		array_push($professorResults, array(
-			'title' 	=> get_the_title(),
-			'permalink'	=>  get_the_permalink()
-		));
+	while ($mainQuery->have_posts()) { //however many posts live in collection is how many times the loop will run
+		$mainQuery->the_post(); // gets data ready and accessible 
+
+		// conditional checks to push array information to correct nested arrays in the results variable
+		if (get_post_type() == 'post' || get_post_type() == 'page') {
+			array_push($results['generalInfo'], array(
+				'title' 	=> get_the_title(),
+				'permalink'	=>  get_the_permalink()
+			));	
+		}
+
+		if (get_post_type() == 'professor') {
+			array_push($results['professors'], array(
+				'title' 	=> get_the_title(),
+				'permalink'	=>  get_the_permalink()
+			));	
+		}
+
+		
+
 	}
 
-	return $professorResults;
+	return $results;
 }
 
 

@@ -1,5 +1,7 @@
 <?php 
 
+// Powers Search Overlay information
+
 add_action('rest_api_init', 'universityRegisterSearch');
 
 function universityRegisterSearch() {
@@ -12,7 +14,21 @@ function universityRegisterSearch() {
 }
 
 function universitySearchResults() {
-	return 'Congratulations, you created a route.';
+	$professors =  new WP_Query(array( // new instance of query class that takes an array of what your looking for
+		'post_type' => 'professor'
+	)); 
+
+	$professorResults = array();
+
+	while ($professors->have_posts()) { //however many posts live in collection is how many times the loop will run
+		$professors->the_post(); // gets data ready and accessible 
+		array_push($professorResults, array(
+			'title' 	=> get_the_title(),
+			'permalink'	=>  get_the_permalink()
+		));
+	}
+
+	return $professorResults;
 }
 
 

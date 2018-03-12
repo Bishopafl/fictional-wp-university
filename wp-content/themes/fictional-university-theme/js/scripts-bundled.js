@@ -13665,20 +13665,22 @@ function () {
     value: function getResults() {
       var _this = this;
 
-      // within when - can include json requests at same time and waits until they all complete until then method runs | then - annonymous function for what happens after everything is run
-      // automatically maps a with one and b with two
-      // $.when(a, b).then((one, two) => ); 
-      _jquery.default.when(_jquery.default.getJSON(universityData.root_url + '/wp-json/wp/v2/posts?search=' + this.searchField.val()), _jquery.default.getJSON(universityData.root_url + '/wp-json/wp/v2/pages?search=' + this.searchField.val())).then(function (posts, pages) {
-        // back tick next to number one allows for template literal html entries in javascipt.  ${} in template literal tells javascript should be evaluated as real javascript code
-        var combinedResults = posts[0].concat(pages[0]);
-
-        _this.resultsDiv.html("\n\t\t\t\t<h2 class=\"search-overlay__section-title\">General Information</h2>\n\t\t\t\t".concat(combinedResults.length ? '<ul class="link-list min-list">' : '<p>No general information matches that search</p>', "\n\t\t\t\t\t").concat(combinedResults.map(function (item) {
-          return "<li><a href=\"".concat(item.link, "\">").concat(item.title.rendered, "</a> ").concat(item.type == 'post' ? "by ".concat(item.authorName) : '', "</li>");
-        }).join(''), " \n\t\t\t\t\n\t\t\t\t").concat(combinedResults.length ? '</ul>' : '', "\n\t\t\t"));
+      _jquery.default.getJSON(universityData.root_url + '/wp-json/university/v1/search?term=' + this.searchField.val(), function (results) {
+        // es6 arrow function
+        // backticks create template literal to drop down and write html. javascript is writting in template literals using ${}
+        _this.resultsDiv.html(" \n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"one-third\">\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">General Information</h2>\n\t\t\t\t\t\t".concat(results.generalInfo.length ? '<ul class="link-list min-list">' : '<p>No general information matches that search</p>', "\n\t\t\t\t\t\t\t").concat(results.generalInfo.map(function (item) {
+          return "<li><a href=\"".concat(item.permalink, "\">").concat(item.title, "</a> ").concat(item.postType == 'post' ? "by ".concat(item.authorName) : '', "</li>");
+        }).join(''), " \n\t\t\t\t\t\t").concat(results.generalInfo.length ? '</ul>' : '', "\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"one-third\">\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Programs</h2>\n\t\t\t\t\t\t").concat(results.programs.length ? '<ul class="link-list min-list">' : "<p>No programs match that search. <a href=\"".concat(universityData.root_url, "/programs\">View all programs</a></p>"), "\n\t\t\t\t\t\t\t").concat(results.programs.map(function (item) {
+          return "<li><a href=\"".concat(item.permalink, "\">").concat(item.title, "</a></li>");
+        }).join(''), " \n\t\t\t\t\t\t").concat(results.programs.length ? '</ul>' : '', "\n\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Professors</h2>\n\t\t\t\t\t\t").concat(results.professors.length ? '<ul class="professor-cards">' : "<p>No professors match that search.</p>", "\n\t\t\t\t\t\t\t").concat(results.professors.map(function (item) {
+          return "\n\t\t\t\t\t\t\t\t<li class=\"professor-card__list-item\">\n\t\t\t\t\t    \t\t\t<a class=\"professor-card\" href=\"".concat(item.permalink, "\">\n\t\t\t\t\t    \t\t\t\t<img class=\"professor-card__image\" src=\"").concat(item.image, "\" alt=\"\">\n\t\t\t\t\t    \t\t\t\t<span class=\"professor-card__name\">").concat(item.title, "</span>\n\t\t\t\t\t    \t\t\t</a>\n\t\t\t\t\t    \t\t</li>\n\t\t\t\t\t\t\t");
+        }).join(''), " \n\t\t\t\t\t\t").concat(results.professors.length ? '</ul>' : '', "\n\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"one-third\">\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Campuses</h2>\n\t\t\t\t\t\t").concat(results.campuses.length ? '<ul class="link-list min-list">' : "<p>No campuses match that search.<a href=\"".concat(universityData.root_url, "/campuses\">View all campuses</a></p>"), "\n\t\t\t\t\t\t\t").concat(results.campuses.map(function (item) {
+          return "<li><a href=\"".concat(item.permalink, "\">").concat(item.title, "</a></li>");
+        }).join(''), " \n\t\t\t\t\t\t").concat(results.campuses.length ? '</ul>' : '', "\n\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Events</h2>\n\t\t\t\t\t\t").concat(results.events.length ? '' : "<p>No events match that search.<a href=\"".concat(universityData.root_url, "/events\">View all events</a></p>"), "\n\t\t\t\t\t\t\t").concat(results.events.map(function (item) {
+          return "\n\t\t\t\t\t\t\t\t<div class=\"event-summary\">\n\t\t\t\t\t\t\t\t\t<a class=\"event-summary__date t-center\" href=\"".concat(item.permalink, "\">\n\t\t\t\t\t\t\t\t    \t<span class=\"event-summary__month\">\n\t\t\t\t\t\t\t\t    \t\t").concat(item.month, "\n\t\t\t\t\t\t\t\t    \t</span>\n\t\t\t\t\t\t\t\t    \t<span class=\"event-summary__day\">\n\t\t\t\t\t\t\t\t    \t\t").concat(item.day, "\n\t\t\t\t\t\t\t\t    \t</span>  \n\t\t\t\t\t\t\t\t  \t</a>\n\t\t\t\t\t\t\t\t  \t<div class=\"event-summary__content\">\n\t\t\t\t\t\t\t\t    \t<h5 class=\"event-summary__title headline headline--tiny\"><a href=\"").concat(item.permalink, "\">").concat(item.title, "</a></h5>\n\t\t\t\t\t\t\t\t    \t<p>").concat(item.description, " <a href=\"").concat(item.permalink, "\" class=\"nu gray\">Learn more</a>\n\t\t\t\t\t\t\t\t    \t}\n\t\t\t\t\t\t\t\t    \t</p>\n\t\t\t\t\t\t\t\t  \t</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t");
+        }).join(''), " \n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t"));
 
         _this.isSpinnerVisible = false;
-      }, function () {
-        _this.resultsDiv.html('<p>Unexpected error; please try again.</p>');
       });
     }
   }, {

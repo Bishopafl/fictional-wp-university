@@ -1,5 +1,7 @@
 <?php 
 
+// page for individual programs
+
 get_header(); 
 
 while(have_posts()) {

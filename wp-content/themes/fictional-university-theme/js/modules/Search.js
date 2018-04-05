@@ -116,6 +116,7 @@ class Search {
 		setTimeout(() => this.searchField.focus(), 301); // inline functions are written like this
 		console.log("open method just ran");
 		this.isOverlayOpen = true;
+		return false;
 	}
 
 	closeOverlay() {

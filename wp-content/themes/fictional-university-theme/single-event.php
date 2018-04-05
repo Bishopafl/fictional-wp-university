@@ -1,6 +1,6 @@
 <?php 
 
-// file is for individual posts
+// file is for individual events
 
 get_header(); 
 

@@ -1,6 +1,6 @@
 <?php 
 
-// file is for individual posts
+// file is for individual professors
 
 get_header(); 
 

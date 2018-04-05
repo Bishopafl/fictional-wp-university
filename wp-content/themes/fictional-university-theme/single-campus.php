@@ -1,5 +1,7 @@
 <?php 
 
+// file is for individual campuses
+
 get_header(); 
 
 while(have_posts()) {

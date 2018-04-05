@@ -13697,6 +13697,7 @@ function () {
 
       console.log("open method just ran");
       this.isOverlayOpen = true;
+      return false;
     }
   }, {
     key: "closeOverlay",

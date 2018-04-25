@@ -6,11 +6,13 @@ function university_post_types() {
 
 	// Campus Post Type
 	register_post_type('campus', array(
-		'supports' => array('title', 'editor', 'excerpt'),
-		'rewrite' =>array('slug' => 'campuses'),
-		'has_archive' => true,
-		'public' => true,
-		'labels' => array(
+		'capability_type'	=> 'campus',
+		'map_meta_cap'		=> true,
+		'supports' 			=> array('title', 'editor', 'excerpt'),
+		'rewrite' 			=> array('slug' => 'campuses'),
+		'has_archive' 		=> true,
+		'public' 			=> true,
+		'labels' 			=> array(
 			'name' 			=> 'Campuses',
 			'add_new_item' 	=> 'Add New Campus',
 			'edit_item'		=> 'Edit Campus',
@@ -22,11 +24,13 @@ function university_post_types() {
 
 	// Event Post Type
 	register_post_type('event', array(
-		'supports' => array('title', 'editor', 'excerpt'),
-		'rewrite' =>array('slug' => 'events'),
-		'has_archive' => true,
-		'public' => true,
-		'labels' => array(
+		'capability_type' 	=> 'event', 							// new unique capabilities for an event
+		'map_meta_cap' 		=> true, 								// without this, we would have to program logic when the capabilities should be required
+		'supports' 			=> array('title', 'editor', 'excerpt'),
+		'rewrite' 			=> array('slug' => 'events'),
+		'has_archive' 		=> true,
+		'public' 			=> true,
+		'labels' 			=> array(
 			'name' 			=> 'Events',
 			'add_new_item' 	=> 'Add New Event',
 			'edit_item'		=> 'Edit Event',
@@ -38,8 +42,8 @@ function university_post_types() {
 
 	// Program Post Type
 	register_post_type('program', array(
-		'supports' => array('title'),
-		'rewrite' =>array('slug' => 'programs'),
+		'supports' 			=> array('title'),
+		'rewrite' 			=>array('slug' => 'programs'),
 		'has_archive' => true,
 		'public' => true,
 		'labels' => array(

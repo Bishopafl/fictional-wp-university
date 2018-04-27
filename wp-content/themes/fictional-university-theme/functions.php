@@ -191,5 +191,33 @@ function noSubsAdminBar() {
 
 add_action('wp_loaded', 'noSubsAdminBar');
 
+/*--------------------------------------------------------------------------------------------------------------------------------*/
+
+/*******************************************/
+/*			Customize Login Screen  	   */
+/*******************************************/
+
+function ourHeaderUrl() {
+	return esc_url(site_url('/'));
+}
+
+add_filter('login_headerurl', 'ourHeaderUrl'); // header logo takes to homepage during login
+
+function ourLoginCSS() {
+	wp_enqueue_style('university_main_styles', get_stylesheet_uri(), NULL, microtime());	
+	// styles
+	wp_enqueue_style('custom-google-fonts','//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
+}
+
+add_action('login_enqueue_scripts', 'ourLoginCSS');
+
+
+function ourLoginTitle() {
+	// change blog header title to make name of website 
+	return get_bloginfo('name');
+}
+
+add_filter('login_headertitle', 'ourLoginTitle');
+
 
 ?>

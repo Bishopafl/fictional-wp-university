@@ -73,7 +73,7 @@ function university_post_types() {
 
 	// Note Post Type
 	register_post_type('note', array(
-		'show_in_rest'		=> true, // work with custom posttype from rest api
+		'show_in_rest'		=> true, // work with custom posttype from rest api from wp-json/wp/v2/note
 		'supports' 			=> array('title', 'editor'),
 		'public' 			=> false, //notes should be private to users
 		'show_ui'			=> true, // shows custom post type in admin dashboard

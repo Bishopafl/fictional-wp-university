@@ -13782,7 +13782,25 @@ function () {
   }, {
     key: "deleteNote",
     value: function deleteNote() {
-      alert('you have clicked delete');
+      _jquery.default.ajax({
+        beforeSend: function beforeSend(xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', universityData.nonce);
+        },
+        url: universityData.root_url + '/wp-json/wp/v2/note/91',
+        // wp url where post json is showing
+        type: 'DELETE',
+        // what type of request you want to send, GET POST DELETE
+        success: function success(response) {
+          console.log('Congrats');
+          console.log(response);
+        },
+        // what you want to happen on success usually a function
+        error: function error(response) {
+          console.log('Sorry...');
+          console.log(response);
+        } // 
+
+      });
     }
   }]);
 

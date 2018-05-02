@@ -13777,20 +13777,56 @@ function () {
     key: "events",
     value: function events() {
       (0, _jquery.default)(".delete-note").on("click", this.deleteNote);
-    } // Methods will go here
+      (0, _jquery.default)(".edit-note").on("click", this.editNote.bind(this));
+    } // CRUD Methods will go here
 
   }, {
+    key: "editNote",
+    value: function editNote(e) {
+      var thisNote = (0, _jquery.default)(e.target).parents("li");
+
+      if (thisNote.data("state" == "editable")) {
+        this.makeNoteReadOnly(thisNote);
+      } else {
+        this.makeNoteEditable(thisNote);
+      }
+    }
+  }, {
+    key: "makeNoteEditable",
+    value: function makeNoteEditable(thisNote) {
+      thisNote.find(".edit-note").html('<i class="fa fa-times" aria-hidden="true"></i>Cancel'); // makes text fields readonly and makes note fields flash that you can edit them
+
+      thisNote.find(".note-title-field, .note-body-field").removeAttr("readonly").addClass("note-active-field"); // adds class to blue save button makes it visible
+
+      thisNote.find(".update-note").addClass("update-note--visible");
+      thisNote.data("state", "editable");
+    }
+  }, {
+    key: "makeNoteReadOnly",
+    value: function makeNoteReadOnly(thisNote) {
+      thisNote.find(".edit-note").html('<i class="fa fa-pencil" aria-hidden="true"></i>Edit'); // makes text fields readonly and makes note fields flash that you can edit them
+
+      thisNote.find(".note-title-field, .note-body-field").attr("readonly", "readonly").removeClass("note-active-field"); // adds class to blue save button makes it invisible
+
+      thisNote.find(".update-note").removeClass("update-note--visible");
+      thisNote.data("state", "cancel");
+    }
+  }, {
     key: "deleteNote",
-    value: function deleteNote() {
+    value: function deleteNote(e) {
+      var thisNote = (0, _jquery.default)(e.target).parents("li");
+
       _jquery.default.ajax({
         beforeSend: function beforeSend(xhr) {
           xhr.setRequestHeader('X-WP-Nonce', universityData.nonce);
         },
-        url: universityData.root_url + '/wp-json/wp/v2/note/91',
-        // wp url where post json is showing
+        url: universityData.root_url + '/wp-json/wp/v2/note/' + thisNote.data('id'),
+        // wp url where post json is showing when you use the data attribute in javascript, you don't need to specify data-id
         type: 'DELETE',
         // what type of request you want to send, GET POST DELETE
         success: function success(response) {
+          thisNote.slideUp(); // removes element with a slide up 
+
           console.log('Congrats');
           console.log(response);
         },

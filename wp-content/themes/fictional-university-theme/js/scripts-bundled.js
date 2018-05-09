@@ -13785,7 +13785,7 @@ function () {
     value: function editNote(e) {
       var thisNote = (0, _jquery.default)(e.target).parents("li");
 
-      if (thisNote.data("state" == "editable")) {
+      if (thisNote.data("state") == "editable") {
         this.makeNoteReadOnly(thisNote);
       } else {
         this.makeNoteEditable(thisNote);

@@ -16,7 +16,8 @@ class MyNotes {
 
 	editNote(e) {
 		var thisNote = $(e.target).parents("li");
-		if (thisNote.data("state" == "editable")) {
+
+		if (thisNote.data("state") == "editable") {
 			this.makeNoteReadOnly(thisNote);
 		} else {
 			this.makeNoteEditable(thisNote);

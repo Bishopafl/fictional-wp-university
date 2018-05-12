@@ -23,7 +23,7 @@ class MyNotes {
 			// very specific property names
 			'title': $(".new-note-title").val(),
 			'content': $(".new-note-body").val(),
-			'status': 'publish' // makes notes automatically published, later we will set to private 
+			'status': 'publish' // makes notes automatically published
 		}
 
 		$.ajax({

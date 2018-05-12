@@ -73,6 +73,8 @@ function university_post_types() {
 
 	// Note Post Type
 	register_post_type('note', array(
+		'capability_type'	=> 'note', // doesn't need to match custom post type, just unique
+		'map_meta_cap'		=> true, // inforces and requires permissions at right time and place
 		'show_in_rest'		=> true, // work with custom posttype from rest api from wp-json/wp/v2/note
 		'supports' 			=> array('title', 'editor'),
 		'public' 			=> false, //notes should be private to users

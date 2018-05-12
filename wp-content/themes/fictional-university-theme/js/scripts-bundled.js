@@ -13790,7 +13790,7 @@ function () {
         // very specific property names
         'title': (0, _jquery.default)(".new-note-title").val(),
         'content': (0, _jquery.default)(".new-note-body").val(),
-        'status': 'publish' // makes notes automatically published, later we will set to private 
+        'status': 'publish' // makes notes automatically published
 
       };
 

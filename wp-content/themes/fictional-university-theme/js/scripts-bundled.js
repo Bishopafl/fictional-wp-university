@@ -13813,6 +13813,10 @@ function () {
         },
         // what you want to happen on success usually a function
         error: function error(response) {
+          if (response.responseText == "You have reached your note limit.") {
+            (0, _jquery.default)(".note-limit-message").addClass("active");
+          }
+
           console.log('Sorry...');
           console.log(response);
         } // 

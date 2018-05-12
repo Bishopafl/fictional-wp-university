@@ -48,6 +48,9 @@ class MyNotes {
 				console.log(response);
 			},		// what you want to happen on success usually a function
 			error: (response) => {
+				if (response.responseText == "You have reached your note limit.") {
+					$(".note-limit-message").addClass("active");
+				}
 				console.log('Sorry...');
 				console.log(response);
 			}		// 
@@ -123,6 +126,9 @@ class MyNotes {
 				thisNote.slideUp();	// removes element with a slide up 
 				console.log('Congrats');
 				console.log(response);
+				if (response.userNoteCount < 5) {
+					$(".note-limit-message").removeClass(".active");
+				}
 			},		// what you want to happen on success usually a function
 			error: (response) => {
 				console.log('Sorry...');

@@ -2,18 +2,58 @@ import $ from 'jquery';
 
 class MyNotes {
 	// three sections for object oriented javascript. first constructor. second events, third custom methods
+	// creating CRUD information with Javascript to save into the WP REST api
 
 	constructor() {
 		this.events();
 	}
 
 	events() {
-		$(".delete-note").on("click", this.deleteNote);
-		$(".edit-note").on("click", this.editNote.bind(this));
-		$(".update-note").on("click", this.updateNote.bind(this));
+		$("#my-notes").on("click", ".delete-note", this.deleteNote);
+		$("#my-notes").on("click", ".edit-note", this.editNote.bind(this));
+		$("#my-notes").on("click", ".update-note", this.updateNote.bind(this));
+		$(".submit-note").on("click", this.createNote.bind(this));
 	}
 
 	// CRUD Methods will go here
+
+	createNote(e) {
+		
+		var ourNewPost = {
+			// very specific property names
+			'title': $(".new-note-title").val(),
+			'content': $(".new-note-body").val(),
+			'status': 'publish' // makes notes automatically published, later we will set to private 
+		}
+
+		$.ajax({
+			beforeSend: (xhr) => {
+				xhr.setRequestHeader('X-WP-Nonce', universityData.nonce);
+			},
+			url: universityData.root_url + '/wp-json/wp/v2/note/',	// wp url where post json is showing when you use the data attribute in javascript, you don't need to specify data-id when creating post
+			type: 'POST',	// what type of request you want to send, GET POST DELETE
+			data: ourNewPost,
+			success: (response) => {
+				$(".new-note-title, .new-note-body").val(''); // empties the title and body sections
+				$(`
+					<li data-id="${response.id}">
+						<input readonly class="note-title-field" value ="${response.title.raw}" type="text">
+						<span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</span>
+						<span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete</span>
+						<textarea readonly class="note-body-field">${response.content.raw}</textarea>
+						<span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i>Save</span>
+					</li>
+				 `).prependTo("#my-notes").hide().slideDown(); // adds li element to my-notes id element // backticks for javascript template literal
+				console.log('Congrats');
+				console.log(response);
+			},		// what you want to happen on success usually a function
+			error: (response) => {
+				console.log('Sorry...');
+				console.log(response);
+			}		// 
+		});	
+	}
+
 
 	updateNote(e) {
 		var thisNote = $(e.target).parents("li");
@@ -27,7 +67,7 @@ class MyNotes {
 			beforeSend: (xhr) => {
 				xhr.setRequestHeader('X-WP-Nonce', universityData.nonce);
 			},
-			url: universityData.root_url + '/wp-json/wp/v2/note/' + thisNote.data('id'),	// wp url where post json is showing when you use the data attribute in javascript, you don't need to specify data-id
+			url: universityData.root_url + '/wp-json/wp/v2/note/' + thisNote.data('id'),	// wp url where post json is showing when you use the data attribute in javascript, thisNote.data('id') grabs the wp id for individual posts
 			type: 'POST',	// what type of request you want to send, GET POST DELETE
 			data: ourUpdatedPost,
 			success: (response) => {

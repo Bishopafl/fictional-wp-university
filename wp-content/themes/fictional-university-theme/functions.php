@@ -233,13 +233,13 @@ add_filter('login_headertitle', 'ourLoginTitle');
 // force note posts to be private
 // 10 = priority of callback function, only good if your using multiple functions to run on the same hook
 // 2 allows function to have two parameters
-add_filter('wp_insert_post_data', 'makeNotePrivate', 10, 2);
+
 
 function makeNotePrivate($data, $postarr) {
 	// makes sure that users cannot create more than 5 posts... could be any number, just to make sure users aren't filling the db with crap
-	if (count_user_posts(get_current_user_id(), 'note') > 4 AND !$postarr['ID']) {
-		die("You have reached your note limit.");
-	}
+	// if (count_user_posts(get_current_user_id(), 'note') > 4 AND !$postarr['ID']) {
+	// 	die("You have reached your note limit.");
+	// }
 	// stop any post body to have any html injections
 	if ($data['post_type'] == 'note') {
 		$data['post_title'] = sanitize_text_field($data['post_title']);
@@ -252,6 +252,8 @@ function makeNotePrivate($data, $postarr) {
 
 	return $data;
 }
+
+add_filter('wp_insert_post_data', 'makeNotePrivate', 10, 2);
 
 
 ?>

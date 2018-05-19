@@ -23,6 +23,9 @@ class Like {
 
 	createLike(currentLikeBox) {
 		$.ajax({
+			beforeSend: (xhr) => {
+				xhr.setRequestHeader('X-WP-Nonce', universityData.nonce); // javascript won't create post due to this
+			},
 			url: universityData.root_url + '/wp-json/university/v1/manageLike',
 			type: 'POST', // type of http request
 			data: {'professorId' : currentLikeBox.data('professor')},

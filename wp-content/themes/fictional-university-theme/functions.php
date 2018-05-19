@@ -4,6 +4,7 @@
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 // for organization, I have created a new file that lives in the includes folder for more code that could also live inside of the functions.php file.
 // the search-route is where the logic for a custom REST API url will live
+require get_theme_file_path('/includes/like-route.php'); 
 require get_theme_file_path('/includes/search-route.php'); 
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 

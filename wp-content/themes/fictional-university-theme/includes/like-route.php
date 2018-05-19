@@ -15,8 +15,19 @@ function universityLikeRoutes() {
 }
 
 // programmability create like and delete posts
-function createLike() {
-	return 'Thanks for trying to create a like.';
+function createLike($data) {
+	$professor = sanitize_text_field($data['professorId']);
+
+
+	wp_insert_post(array(
+		'post_type' 	=> 'like',
+		'post_status'	=> 'publish', // wp considers a finalized post
+		'post_title'	=> 'Second PHP Test',
+		'meta_input'	=> array(
+			'liked_professor_id'		=> $professor
+			
+		)
+	)); // Let us programmatically create a new post within the php code
 }
 
 function deleteLike() {
